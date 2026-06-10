@@ -1,20 +1,11 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "next.config.ts",
-      "use": "@vercel/next"
-    }
-  ],
   "functions": {
-    "app/api/**": {
+    "app/api/**/*": {
       "memory": 1024,
       "maxDuration": 60
     }
   },
   "env": {
     "NEXT_DISABLE_FONT_DOWNLOAD": "1"
-  },
-  "buildCommand": "npm run build",
-  "outputDirectory": ".next"
+  }
 }
