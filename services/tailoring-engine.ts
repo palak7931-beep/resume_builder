@@ -8,6 +8,7 @@ export async function tailorResume(
   resume: ResumeProfile,
   jobDescription: JobDescriptionProfile
 ): Promise<TailoredResume> {
+  console.time('tailoring_engine_total');
   // Collect all JD requirements for context
   const allRequirements = [
     ...jobDescription.requiredSkills,
@@ -15,12 +16,27 @@ export async function tailorResume(
     ...jobDescription.tools,
     ...jobDescription.keywords,
   ];
+
+  let rewriteBudget = 3;
+  const unchangedBullet = (bullet: string): BulletRewrite => ({
+    original: bullet,
+    tailored: bullet,
+    changeReason: 'Left unchanged to keep processing within timeout limits.',
+    keywordsAddressed: [],
+    confidence: 'low',
+  });
   
   // Tailor experience bullets
+  console.time('tailoring_engine_experience');
   const tailoredExperience = await Promise.all(
     resume.experience.map(async (exp) => {
       const bullets = await Promise.all(
         exp.bullets.map(async (bullet) => {
+          if (rewriteBudget <= 0) {
+            return unchangedBullet(bullet);
+          }
+
+          rewriteBudget -= 1;
           return await rewriteBullet(
             bullet,
             `${exp.title} at ${exp.company}`,
@@ -39,31 +55,42 @@ export async function tailorResume(
       };
     })
   );
+  console.timeEnd('tailoring_engine_experience');
   
   // Tailor project bullets (if any)
-  const tailoredProjects = resume.projects.length > 0
-    ? await Promise.all(
-        resume.projects.map(async (proj) => {
-          const bullets = await Promise.all(
-            proj.bullets.map(async (bullet) => {
-              return await rewriteBullet(
-                bullet,
-                `Project: ${proj.name}`,
-                allRequirements,
-                resume
-              );
-            })
-          );
-          
-          return {
-            name: proj.name,
-            description: proj.description,
-            bullets,
-            technologies: proj.technologies,
-          };
-        })
-      )
-    : undefined;
+  let tailoredProjects;
+  if (resume.projects.length > 0) {
+    console.time('tailoring_engine_projects');
+    tailoredProjects = await Promise.all(
+      resume.projects.map(async (proj) => {
+        const bullets = await Promise.all(
+          proj.bullets.map(async (bullet) => {
+            if (rewriteBudget <= 0) {
+              return unchangedBullet(bullet);
+            }
+
+            rewriteBudget -= 1;
+            return await rewriteBullet(
+              bullet,
+              `Project: ${proj.name}`,
+              allRequirements,
+              resume
+            );
+          })
+        );
+        
+        return {
+          name: proj.name,
+          description: proj.description,
+          bullets,
+          technologies: proj.technologies,
+        };
+      })
+    );
+    console.timeEnd('tailoring_engine_projects');
+  } else {
+    tailoredProjects = undefined;
+  }
   
   // Reorder skills to prioritize JD-relevant ones (without adding new skills)
   let tailoredSkills = [...resume.skills].sort((a, b) => {
@@ -81,12 +108,15 @@ export async function tailorResume(
   // For Phase 2, we'll keep the original summary
   // In Phase 4, we could add LLM-based summary rewriting
   
-  return {
+  const result = {
     tailoredSummary,
     tailoredSkills,
     tailoredExperience,
     tailoredProjects,
   };
+
+  console.timeEnd('tailoring_engine_total');
+  return result;
 }
 
 async function rewriteBullet(
@@ -95,6 +125,7 @@ async function rewriteBullet(
   jdRequirements: string[],
   resume: ResumeProfile
 ): Promise<BulletRewrite> {
+  console.time('tailoring_engine_rewrite_bullet');
   // Select relevant JD requirements for this bullet
   const relevantRequirements = jdRequirements.filter(req =>
     originalBullet.toLowerCase().includes(req.toLowerCase()) ||
@@ -107,6 +138,7 @@ async function rewriteBullet(
     BulletRewriteSchema,
     { model: process.env.GROQ_MODEL_MINI, maxTokens: 512 }
   );
+  console.timeEnd('tailoring_engine_rewrite_bullet');
   
   return applyTruthfulnessGuardrails(originalBullet, result, resume);
 }

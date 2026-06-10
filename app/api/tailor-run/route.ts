@@ -18,6 +18,7 @@ const MAX_JD_CHARS = parseInt(process.env.MAX_JD_CHARS || '16000', 10);
 export async function POST(request: NextRequest) {
   const startTime = Date.now();
   let llmCalls = 0;
+  let totalTimerStarted = false;
 
   try {
     const body = await request.json();
@@ -69,13 +70,17 @@ export async function POST(request: NextRequest) {
       return successResponse(fallbackRun);
     }
 
+    console.time('tailor_run_total');
+    totalTimerStarted = true;
     // Parse resume and JD in parallel
+    console.time('tailor_run_parse_resume_jd');
     const parseStart = Date.now();
     llmCalls += 2;
     const [resume, jobDescription] = await Promise.all([
       parseResume(normalizedResume.rawText),
       parseJobDescription(normalizedJD.rawText),
     ]);
+    console.timeEnd('tailor_run_parse_resume_jd');
     console.log('tailor_run_step', {
       step: 'parse_resume_and_jd',
       durationMs: Date.now() - parseStart,
@@ -83,9 +88,11 @@ export async function POST(request: NextRequest) {
     });
 
     // Compute original match score
+    console.time('tailor_run_original_match_score');
     const originalScoreStart = Date.now();
     llmCalls += 1;
     const originalMatchScore = await computeMatchScore(resume, jobDescription);
+    console.timeEnd('tailor_run_original_match_score');
     console.log('tailor_run_step', {
       step: 'original_match_score',
       durationMs: Date.now() - originalScoreStart,
@@ -93,9 +100,11 @@ export async function POST(request: NextRequest) {
     });
 
     // Analyze gaps
+    console.time('tailor_run_gap_analysis');
     const gapsStart = Date.now();
     llmCalls += 1;
     const gapAnalysis = await analyzeGaps(resume, jobDescription);
+    console.timeEnd('tailor_run_gap_analysis');
     console.log('tailor_run_step', {
       step: 'gap_analysis',
       durationMs: Date.now() - gapsStart,
@@ -103,9 +112,11 @@ export async function POST(request: NextRequest) {
     });
 
     // Tailor resume
+    console.time('tailor_run_tailor_resume');
     const tailoringStart = Date.now();
     llmCalls += 1;
     const tailoredResume = await tailorResume(resume, jobDescription);
+    console.timeEnd('tailor_run_tailor_resume');
     console.log('tailor_run_step', {
       step: 'tailor_resume',
       durationMs: Date.now() - tailoringStart,
@@ -113,12 +124,14 @@ export async function POST(request: NextRequest) {
     });
 
     // Compute tailored match score
+    console.time('tailor_run_tailored_match_score');
     const tailoredScoreStart = Date.now();
     llmCalls += 1;
     const tailoredMatchScore = await computeMatchScore(
       { ...resume, skills: tailoredResume.tailoredSkills },
       jobDescription
     );
+    console.timeEnd('tailor_run_tailored_match_score');
     console.log('tailor_run_step', {
       step: 'tailored_match_score',
       durationMs: Date.now() - tailoredScoreStart,
@@ -148,6 +161,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Log completion
+    console.timeEnd('tailor_run_total');
     const durationMs = Date.now() - startTime;
     console.log('tailor_run_complete', {
       runId: tailoringRun.id,
@@ -161,6 +175,9 @@ export async function POST(request: NextRequest) {
 
     return successResponse(tailoringRun);
   } catch (error: any) {
+    if (totalTimerStarted) {
+      console.timeEnd('tailor_run_total');
+    }
     console.error('Tailor run error:', error);
     
     if (error instanceof LlmError) {

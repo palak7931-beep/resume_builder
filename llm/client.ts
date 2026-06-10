@@ -95,6 +95,7 @@ export async function callLlm(
   for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
     try {
       const client = getGroqClient();
+      console.time('llm_call');
       const response = await Promise.race([
         client.chat.completions.create({
           messages: [
@@ -110,6 +111,7 @@ export async function callLlm(
           setTimeout(() => reject(new Error('Request timeout')), TIMEOUT_MS)
         ),
       ]) as any;
+      console.timeEnd('llm_call');
 
       const content = response.choices[0]?.message?.content;
       if (!content) {
