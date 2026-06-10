@@ -33,7 +33,7 @@ export async function computeMatchScore(
     MATCH_SCORING_SYSTEM,
     MATCH_SCORING_USER(resume, jobDescription),
     MatchScoreSchema,
-    { model: process.env.GROQ_MODEL_MINI }
+    { model: process.env.GROQ_MODEL_MINI, stage: 'computeMatchScore' }
   );
   
   // Blend deterministic and LLM scores

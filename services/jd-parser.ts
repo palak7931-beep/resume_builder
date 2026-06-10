@@ -13,7 +13,7 @@ export async function parseJobDescription(jdText: string): Promise<JobDescriptio
     JD_EXTRACTION_SYSTEM,
     JD_EXTRACTION_USER(truncatedText),
     JobDescriptionProfileSchema,
-    { model: process.env.GROQ_MODEL_MINI }
+    { model: process.env.GROQ_MODEL_MINI, stage: 'parseJobDescription' }
   );
   
   // Deduplicate skills and keywords (case-insensitive)

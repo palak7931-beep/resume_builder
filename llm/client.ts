@@ -21,6 +21,7 @@ export interface LlmConfig {
   model?: string;
   temperature?: number;
   maxTokens?: number;
+  stage?: string;
 }
 
 export interface LlmResponse<T> {
@@ -89,13 +90,16 @@ export async function callLlm(
   config: LlmConfig = {}
 ): Promise<string> {
   const model = config.model || process.env.GROQ_MODEL || 'llama-3.3-70b-versatile';
+  const stage = config.stage || 'callLlm';
+  const startTime = Date.now();
+  const startTimestamp = new Date(startTime).toISOString();
+  console.log('llm_call_start', { stage, model, startTimestamp });
   
   let lastError: Error | null = null;
   
   for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
     try {
       const client = getGroqClient();
-      console.time('llm_call');
       const response = await Promise.race([
         client.chat.completions.create({
           messages: [
@@ -111,7 +115,10 @@ export async function callLlm(
           setTimeout(() => reject(new Error('Request timeout')), TIMEOUT_MS)
         ),
       ]) as any;
-      console.timeEnd('llm_call');
+      const endTime = Date.now();
+      const endTimestamp = new Date(endTime).toISOString();
+      const durationMs = endTime - startTime;
+      console.log('llm_call_end', { stage, model, startTimestamp, endTimestamp, durationMs, attempt });
 
       const content = response.choices[0]?.message?.content;
       if (!content) {

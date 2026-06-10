@@ -11,7 +11,7 @@ export async function analyzeGaps(
     GAP_ANALYSIS_SYSTEM,
     GAP_ANALYSIS_USER(resume, jobDescription),
     GapAnalysisSchema,
-    { model: process.env.GROQ_MODEL_MINI }
+    { model: process.env.GROQ_MODEL_MINI, stage: 'analyzeGaps' }
   );
   
   // Verify resume evidence for each gap

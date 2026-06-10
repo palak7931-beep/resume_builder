@@ -13,7 +13,7 @@ export async function parseResume(resumeText: string): Promise<ResumeProfile> {
     RESUME_PARSER_SYSTEM,
     RESUME_PARSER_USER(truncatedText),
     ResumeProfileSchema,
-    { model: process.env.GROQ_MODEL_MINI }
+    { model: process.env.GROQ_MODEL_MINI, stage: 'parseResume' }
   );
   
   return result;
