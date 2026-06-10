@@ -225,7 +225,7 @@ Replace mock data with a real server-side pipeline: parse → score → gap → 
 ### Prerequisites
 
 - Phase 1 complete (schemas, UI, client state).
-- Valid `OPENAI_API_KEY` in `.env.local`.
+- Valid `GROQ_API_KEY` in `.env.local`.
 
 ### Tasks
 
@@ -233,7 +233,7 @@ Replace mock data with a real server-side pipeline: parse → score → gap → 
 
 Implement `llm/client.ts`:
 
-- [ ] OpenAI SDK wrapper with configurable model (`OPENAI_MODEL`, `OPENAI_MODEL_MINI`).
+- [ ] Groq SDK wrapper with configurable model (`GROQ_MODEL`, `GROQ_MODEL_MINI`).
 - [ ] 60s timeout, 2 retries with exponential backoff on 429/5xx.
 - [ ] Token-safe truncation helpers (section-aware, respect `MAX_RESUME_CHARS`, `MAX_JD_CHARS`).
 
@@ -314,7 +314,7 @@ Error handling:
 
 #### 2.6 Integration tests (mocked LLM)
 
-- [ ] Vitest + MSW: mock OpenAI responses with fixture JSON.
+- [ ] Vitest + MSW: mock Groq responses with fixture JSON.
 - [ ] Test full `/api/tailor-run` pipeline returns valid `TailoringRun`.
 - [ ] Test invalid LLM JSON triggers repair then error.
 
@@ -550,7 +550,7 @@ Implement full `services/document-ingestion.ts`:
 #### 5.4 Security and ops
 
 - [ ] Rate limit `/api/tailor-run` (e.g., 10 requests/hour/IP) for production.
-- [ ] Verify `OPENAI_API_KEY` only in server routes.
+- [ ] Verify `GROQ_API_KEY` only in server routes.
 - [ ] Add security headers via Next.js config.
 - [ ] Ensure logs never include full resume/JD text.
 

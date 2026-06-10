@@ -1,0 +1,36 @@
+# Representative backend engineer job listing for demo mode and tests.
+
+Backend Software Engineer
+Northline Analytics — Portland, OR (Hybrid)
+
+About the role
+We are looking for a Backend Software Engineer to help design, build, and maintain scalable API services and data workflows supporting our analytics platform.
+
+Responsibilities
+- Design and implement RESTful APIs using Python and modern web frameworks.
+- Build reliable data pipelines and background jobs for reporting and ingestion.
+- Optimize PostgreSQL queries, schema design, and caching strategies with Redis.
+- Collaborate with frontend, product, and QA teams in an agile environment.
+- Participate in code reviews, incident response, and CI/CD improvements.
+- Write automated tests and contribute to engineering best practices.
+
+Required qualifications
+- 2+ years of professional backend development experience.
+- Strong proficiency in Python and SQL.
+- Experience with PostgreSQL and production API services.
+- Familiarity with Docker and cloud deployment workflows.
+- Understanding of automated testing and version control with Git.
+- Ability to communicate clearly and work cross-functionally.
+
+Preferred qualifications
+- Experience with FastAPI or similar Python frameworks.
+- Exposure to Redis, message queues, or event-driven architectures.
+- Experience with TypeScript/Node.js services.
+- AWS or other cloud provider experience.
+- CI/CD tooling such as GitHub Actions.
+
+Keywords
+Python, FastAPI, PostgreSQL, Redis, Docker, REST, APIs, backend, data pipelines, CI/CD, Git, AWS, TypeScript
+
+Seniority
+Mid-level

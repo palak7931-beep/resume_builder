@@ -89,7 +89,7 @@
 |---|---|---|---|---|---|
 | P5-SEC-01 | 🔴 | Abuse: 100 analyze requests/min | Rate limit 10/hour/IP; `429 RATE_LIMITED` | Middleware | Integration |
 | P5-SEC-02 | 🟡 | Shared NAT IP (office/campus) | Document limitation; optional API key for demo | README | — |
-| P5-SEC-03 | 🔴 | `OPENAI_API_KEY` in client bundle | Verify production build | Build audit | CI script |
+| P5-SEC-03 | 🔴 | `GROQ_API_KEY` in client bundle | Verify production build | Build audit | CI script |
 | P5-SEC-04 | 🟡 | XSS in pasted resume rendered as HTML | Render as text only; never `dangerouslySetInnerHTML` | Components | Code review |
 | P5-SEC-05 | 🟡 | CSRF on API routes | Same-origin fetch; SameSite cookies if added | Next.js defaults | Manual |
 | P5-SEC-06 | 🟡 | Security headers missing | `X-Frame-Options`, `X-Content-Type-Options` | `next.config.js` | Security scan |
@@ -106,7 +106,7 @@
 | P5-DEP-02 | 🟡 | Serverless timeout during tailor-run | Pro plan or optimize; show timeout message | Vercel config | Production |
 | P5-DEP-03 | 🟡 | Serverless timeout during PDF gen | Increase timeout or edge vs node runtime | Config | Production |
 | P5-DEP-04 | 🟡 | Cold start + 90s analyze | First request slow; loading copy | UX | Manual |
-| P5-DEP-05 | 🟡 | `OPENAI_API_KEY` quota exceeded | User message; log error code | LLM client | Manual |
+| P5-DEP-05 | 🟡 | `GROQ_API_KEY` quota exceeded | User message; log error code | LLM client | Manual |
 | P5-DEP-06 | 🟢 | Wrong region latency | Document optional region pinning | README | — |
 | P5-DEP-07 | 🟡 | Preview deployment exposes app publicly | OK for portfolio; rate limit still apply | Vercel | — |
 
@@ -116,7 +116,7 @@
 
 | ID | Severity | Scenario | Expected behavior | Handle in | Test |
 |---|---|---|---|---|---|
-| P5-E2E-01 | 🟡 | CI has no `OPENAI_API_KEY` | Mock `/api/tailor-run` in E2E | Playwright route | CI |
+| P5-E2E-01 | 🟡 | CI has no `GROQ_API_KEY` | Mock `/api/tailor-run` in E2E | Playwright route | CI |
 | P5-E2E-02 | 🟡 | Flaky analyze timeout | Increase test timeout; mock API | Playwright config | CI |
 | P5-E2E-03 | 🟡 | Download PDF in headless | Verify download event or API response size > 0 | Playwright | CI |
 | P5-E2E-04 | 🟡 | sessionStorage cleared between steps | Seed state in test | Playwright | CI |

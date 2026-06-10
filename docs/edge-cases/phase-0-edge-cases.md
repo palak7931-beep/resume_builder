@@ -19,7 +19,7 @@
 
 | ID | Severity | Scenario | Expected behavior | Handle in | Test |
 |---|---|---|---|---|---|
-| P0-ENV-01 | 🔴 | `OPENAI_API_KEY` missing during Phase 0 dev | App still runs; no crash on landing (key only needed Phase 2+) | `.env.local.example`, README | Manual: dev without key |
+| P0-ENV-01 | 🔴 | `GROQ_API_KEY` missing during Phase 0 dev | App still runs; no crash on landing (key only needed Phase 2+) | `.env.local.example`, README | Manual: dev without key |
 | P0-ENV-02 | 🟡 | Developer on Windows (OneDrive path) | No symlink or path-length build failures | Document in README; avoid deep nesting | Manual: `npm run build` |
 | P0-ENV-03 | 🟡 | Node version mismatch (e.g. Node 18 vs 20) | Document minimum Node in README; engines field in `package.json` | `package.json` `"engines"` | CI matrix |
 | P0-ENV-04 | 🟢 | Duplicate `.env` files (`.env`, `.env.local`) | Document precedence; example file lists vars only | README | Manual |

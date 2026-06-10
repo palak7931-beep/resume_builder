@@ -36,9 +36,9 @@
 
 | ID | Severity | Scenario | Expected behavior | Handle in | Test |
 |---|---|---|---|---|---|
-| P2-LLM-01 | 🔴 | `OPENAI_API_KEY` missing at runtime | `500` `{ code: 'CONFIG_ERROR' }`; no stack trace to client | API routes | Integration without key |
-| P2-LLM-02 | 🔴 | OpenAI 429 rate limit | Retry 2x exponential backoff; then user-friendly error | `llm/client.ts` | MSW mock 429 |
-| P2-LLM-03 | 🔴 | OpenAI 500 / network timeout | Retry; then `{ code: 'LLM_UNAVAILABLE' }` | `llm/client.ts` | MSW |
+| P2-LLM-01 | 🔴 | `GROQ_API_KEY` missing at runtime | `500` `{ code: 'CONFIG_ERROR' }`; no stack trace to client | API routes | Integration without key |
+| P2-LLM-02 | 🔴 | Groq 429 rate limit | Retry 2x exponential backoff; then user-friendly error | `llm/client.ts` | MSW mock 429 |
+| P2-LLM-03 | 🔴 | Groq 500 / network timeout | Retry; then `{ code: 'LLM_UNAVAILABLE' }` | `llm/client.ts` | MSW |
 | P2-LLM-04 | 🔴 | Response truncated mid-JSON | Zod fail → repair prompt → fail with error | `structured-output.ts` | Mock truncated JSON |
 | P2-LLM-05 | 🟡 | LLM wraps JSON in markdown code fences | Strip fences before `JSON.parse` | `structured-output.ts` | Unit |
 | P2-LLM-06 | 🟡 | LLM returns array instead of object | Validation fails; repair or error | `structured-output.ts` | MSW |
@@ -160,7 +160,7 @@
 |---|---|---|---|---|---|
 | P2-LOG-01 | 🔴 | Full resume logged on error | Log hashes + runId only | All services | Code review |
 | P2-LOG-02 | 🟡 | LLM raw response logged in production | Dev only or redacted | `structured-output.ts` | Env check |
-| P2-SEC-01 | 🔴 | Client calls OpenAI directly | All LLM calls server-side only | Architecture | Network tab audit |
+| P2-SEC-01 | 🔴 | Client calls Groq directly | All LLM calls server-side only | Architecture | Network tab audit |
 
 ---
 

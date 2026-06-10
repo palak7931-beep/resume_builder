@@ -1,0 +1,39 @@
+# Representative sample resume for demo mode and tests (fictional contact info).
+
+ALEX RIVERA
+alex.rivera@email.example | (555) 010-2244 | Portland, OR
+linkedin.com/in/alexrivera | github.com/alexrivera-dev
+
+SUMMARY
+Backend-focused software engineer with 3 years of experience building REST APIs, data pipelines, and cloud-deployed services. Comfortable with Python, TypeScript, SQL, and Docker.
+
+SKILLS
+Python, TypeScript, Node.js, PostgreSQL, Redis, Docker, Git, REST APIs, unit testing, CI/CD
+
+EXPERIENCE
+
+Northline Analytics — Software Engineer
+Jan 2022 – Present | Portland, OR
+- Built Python FastAPI services handling 2M+ daily requests with PostgreSQL and Redis caching.
+- Designed ETL jobs that reduced reporting latency from hours to under 15 minutes.
+- Collaborated with product and QA to ship features using GitHub Actions CI/CD pipelines.
+- Wrote unit and integration tests that increased backend coverage from 58% to 81%.
+
+BrightCart Labs — Junior Backend Developer
+Jun 2020 – Dec 2021 | Remote
+- Implemented REST endpoints in Node.js/Express for an e-commerce admin dashboard.
+- Optimized SQL queries and added indexes that improved checkout API response times by 30%.
+- Participated in code reviews and on-call rotation for production incidents.
+
+PROJECTS
+
+Inventory Sync Tool
+- Created a Python script and scheduled job to reconcile warehouse CSV exports with PostgreSQL inventory tables.
+
+EDUCATION
+
+State University — B.S. Computer Science
+2016 – 2020
+
+CERTIFICATIONS
+AWS Certified Cloud Practitioner — 2023

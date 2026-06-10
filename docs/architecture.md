@@ -100,7 +100,7 @@ flowchart TB
     end
 
     subgraph External["External Services"]
-        OpenAI[OpenAI / Structured LLM API]
+        Groq[Groq / Structured LLM API]
     end
 
     subgraph Storage["Storage (MVP)"]
@@ -132,7 +132,7 @@ flowchart TB
     TE --> Prompts
     GE --> Prompts
     Prompts --> Client_LLM
-    Client_LLM --> OpenAI
+    Client_LLM --> Groq
     Client_LLM --> Validator
     API --> Session
     API -.-> OptionalDB
@@ -149,7 +149,7 @@ flowchart TB
 | **Styling** | Tailwind CSS, shadcn/ui | Rapid, consistent UI for forms, cards, diff views |
 | **Backend** | Next.js API Routes (App Router) | Co-located with frontend; sufficient for MVP |
 | **Validation** | Zod | Runtime validation of LLM JSON and API payloads |
-| **LLM** | OpenAI API (structured outputs / JSON mode) | Reliable schema-constrained generation |
+| **LLM** | Groq API (structured outputs / JSON mode) | Reliable schema-constrained generation |
 | **Document parsing** | `pdf-parse` (PDF), `mammoth` (DOCX) | Common Node ecosystem; fallback to LLM cleanup pass |
 | **PDF export** | `@react-pdf/renderer` or Playwright print-to-PDF | React PDF for programmatic layout; Playwright for pixel-perfect HTML comparison |
 | **Storage (MVP)** | React state + `sessionStorage` | No auth required for demo |
@@ -211,7 +211,7 @@ resume-builder-project/
 │   ├── gap-analysis.ts
 │   └── resume-assembly.ts
 ├── llm/
-│   ├── client.ts                   # OpenAI wrapper, retries, timeouts
+│   ├── client.ts                   # Groq wrapper, retries, timeouts
 │   └── structured-output.ts        # JSON mode + schema enforcement
 ├── templates/
 │   └── comparison-pdf.tsx          # React PDF layout
@@ -508,8 +508,8 @@ See [Section 12](#12-pdf-generation-architecture).
 
 ```typescript
 // llm/client.ts responsibilities
-- API key from env (OPENAI_API_KEY)
-- Model: gpt-4o or gpt-4o-mini (mini for extraction, full for rewriting)
+- API key from env (GROQ_API_KEY)
+- Model: llama-3.3-70b-versatile or llama-3.1-8b-instant (mini for extraction, full for rewriting)
 - Timeout: 60s per call
 - Retries: 2 with exponential backoff on 429/5xx
 - Token limits: truncate JD/resume to model context with section-aware chunking
@@ -834,7 +834,7 @@ Use content hashes (`resumeHash`, `jdHash`) to deduplicate and cache LLM results
 
 ## 16. Security and Privacy
 
-- **API keys** server-side only (`OPENAI_API_KEY` in `.env.local`, never exposed to client).
+- **API keys** server-side only (`GROQ_API_KEY` in `.env.local`, never exposed to client).
 - **No persistent PII storage** in MVP unless user opts in.
 - **File upload sanitization** — validate MIME type, size limits; do not execute uploaded content.
 - **Rate limiting** — basic IP-based limit on `/api/tailor-run` (e.g., 10/hour) for public deployment.
@@ -948,11 +948,11 @@ The proof artifact — the side-by-side comparison PDF — is the primary delive
 
 ```bash
 # Required
-OPENAI_API_KEY=
+GROQ_API_KEY=
 
 # Optional
-OPENAI_MODEL=gpt-4o
-OPENAI_MODEL_MINI=gpt-4o-mini
+GROQ_MODEL=llama-3.3-70b-versatile
+GROQ_MODEL_MINI=llama-3.1-8b-instant
 MAX_RESUME_CHARS=32000
 MAX_JD_CHARS=16000
 RATE_LIMIT_PER_HOUR=10
