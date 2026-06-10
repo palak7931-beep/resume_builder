@@ -6,7 +6,7 @@ export const ContactSchema = z.object({
   email: z.string().email().optional(),
   phone: z.string().optional(),
   location: z.string().optional(),
-  links: z.array(z.string()).optional(),
+  links: z.array(z.string()).default([]),
 });
 
 // Experience entry
@@ -16,15 +16,15 @@ export const ExperienceEntrySchema = z.object({
   startDate: z.string().optional(),
   endDate: z.string().optional(),
   location: z.string().optional(),
-  bullets: z.array(z.string()),
+  bullets: z.array(z.string()).default([]),
 });
 
 // Project entry
 export const ProjectEntrySchema = z.object({
   name: z.string(),
   description: z.string().optional(),
-  bullets: z.array(z.string()),
-  technologies: z.array(z.string()).optional(),
+  bullets: z.array(z.string()).default([]),
+  technologies: z.array(z.string()).default([]),
 });
 
 // Education entry
@@ -46,11 +46,11 @@ export const CertificationEntrySchema = z.object({
 export const ResumeProfileSchema = z.object({
   contact: ContactSchema.optional(),
   summary: z.string().optional(),
-  skills: z.array(z.string()),
-  experience: z.array(ExperienceEntrySchema),
-  projects: z.array(ProjectEntrySchema),
-  education: z.array(EducationEntrySchema),
-  certifications: z.array(CertificationEntrySchema),
+  skills: z.array(z.string()).default([]),
+  experience: z.array(ExperienceEntrySchema).default([]),
+  projects: z.array(ProjectEntrySchema).default([]),
+  education: z.array(EducationEntrySchema).default([]),
+  certifications: z.array(CertificationEntrySchema).default([]),
   rawText: z.string().optional(),
 });
 
