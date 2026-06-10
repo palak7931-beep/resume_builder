@@ -36,7 +36,7 @@ export async function completeStructured<T>(
       try {
         parsed = JSON.parse(jsonText);
       } catch (parseError) {
-        console.log('completeStructured_parse_error', { stage: config.stage, attempt, error: parseError.message });
+        console.log('completeStructured_parse_error', { stage: config.stage, attempt, error: parseError instanceof Error ? parseError.message : String(parseError) });
         throw new LlmError('LLM_JSON_PARSE_ERROR', 'Failed to parse LLM response as JSON', parseError);
       }
 
