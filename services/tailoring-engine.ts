@@ -136,7 +136,7 @@ async function rewriteBullet(
     BULLET_REWRITER_SYSTEM,
     BULLET_REWRITER_USER(originalBullet, jobContext, relevantRequirements),
     BulletRewriteSchema,
-    { model: process.env.GROQ_MODEL_MINI, maxTokens: 512 }
+    { model: process.env.GROQ_MODEL, maxTokens: 512 }
   );
   console.timeEnd('tailoring_engine_rewrite_bullet');
   
