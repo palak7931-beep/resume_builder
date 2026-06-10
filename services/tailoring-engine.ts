@@ -105,7 +105,7 @@ async function rewriteBullet(
     BULLET_REWRITER_SYSTEM,
     BULLET_REWRITER_USER(originalBullet, jobContext, relevantRequirements),
     BulletRewriteSchema,
-    { model: process.env.GROQ_MODEL }
+    { model: process.env.GROQ_MODEL_MINI, maxTokens: 512 }
   );
   
   return applyTruthfulnessGuardrails(originalBullet, result, resume);

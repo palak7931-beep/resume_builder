@@ -70,30 +70,60 @@ export async function POST(request: NextRequest) {
     }
 
     // Parse resume and JD in parallel
+    const parseStart = Date.now();
     llmCalls += 2;
     const [resume, jobDescription] = await Promise.all([
       parseResume(normalizedResume.rawText),
       parseJobDescription(normalizedJD.rawText),
     ]);
+    console.log('tailor_run_step', {
+      step: 'parse_resume_and_jd',
+      durationMs: Date.now() - parseStart,
+      llmCalls,
+    });
 
     // Compute original match score
+    const originalScoreStart = Date.now();
     llmCalls += 1;
     const originalMatchScore = await computeMatchScore(resume, jobDescription);
+    console.log('tailor_run_step', {
+      step: 'original_match_score',
+      durationMs: Date.now() - originalScoreStart,
+      llmCalls,
+    });
 
     // Analyze gaps
+    const gapsStart = Date.now();
     llmCalls += 1;
     const gapAnalysis = await analyzeGaps(resume, jobDescription);
+    console.log('tailor_run_step', {
+      step: 'gap_analysis',
+      durationMs: Date.now() - gapsStart,
+      llmCalls,
+    });
 
     // Tailor resume
+    const tailoringStart = Date.now();
     llmCalls += 1;
     const tailoredResume = await tailorResume(resume, jobDescription);
+    console.log('tailor_run_step', {
+      step: 'tailor_resume',
+      durationMs: Date.now() - tailoringStart,
+      llmCalls,
+    });
 
     // Compute tailored match score
+    const tailoredScoreStart = Date.now();
     llmCalls += 1;
     const tailoredMatchScore = await computeMatchScore(
       { ...resume, skills: tailoredResume.tailoredSkills },
       jobDescription
     );
+    console.log('tailor_run_step', {
+      step: 'tailored_match_score',
+      durationMs: Date.now() - tailoredScoreStart,
+      llmCalls,
+    });
 
     // Build TailoringRun
     const tailoringRun: TailoringRun = {
