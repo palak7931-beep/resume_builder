@@ -105,15 +105,15 @@ export const BulletRewriteSchema = z.object({
 export const TailoredExperienceEntrySchema = z.object({
   company: z.string(),
   title: z.string(),
-  startDate: z.string().optional(),
-  endDate: z.string().optional(),
+  startDate: z.string().nullable().optional(),
+  endDate: z.string().nullable().optional(),
   bullets: z.array(BulletRewriteSchema),
 });
 
 // Tailored project entry
 export const TailoredProjectEntrySchema = z.object({
   name: z.string(),
-  description: z.string().optional(),
+  description: z.string().nullable().optional(),
   bullets: z.array(BulletRewriteSchema),
   technologies: z.array(z.string()).optional(),
 });
