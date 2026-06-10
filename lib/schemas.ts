@@ -13,16 +13,16 @@ export const ContactSchema = z.object({
 export const ExperienceEntrySchema = z.object({
   company: z.string(),
   title: z.string(),
-  startDate: z.string().optional(),
-  endDate: z.string().optional(),
-  location: z.string().optional(),
+  startDate: z.string().nullable().optional(),
+  endDate: z.string().nullable().optional(),
+  location: z.string().nullable().optional(),
   bullets: z.array(z.string()).default([]),
 });
 
 // Project entry
 export const ProjectEntrySchema = z.object({
   name: z.string(),
-  description: z.string().optional(),
+  description: z.string().nullable().optional(),
   bullets: z.array(z.string()).default([]),
   technologies: z.array(z.string()).default([]),
 });
@@ -30,9 +30,9 @@ export const ProjectEntrySchema = z.object({
 // Education entry
 export const EducationEntrySchema = z.object({
   institution: z.string(),
-  degree: z.string().optional(),
-  field: z.string().optional(),
-  graduationDate: z.string().optional(),
+  degree: z.string().nullable().optional(),
+  field: z.string().nullable().optional(),
+  graduationDate: z.string().nullable().optional(),
 });
 
 // Certification entry
