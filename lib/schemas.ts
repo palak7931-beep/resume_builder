@@ -58,15 +58,15 @@ export const ResumeProfileSchema = z.object({
 export const JobDescriptionProfileSchema = z.object({
   jobTitle: z.string(),
   company: z.string().optional(),
-  requiredSkills: z.array(z.string()),
-  preferredSkills: z.array(z.string()),
-  responsibilities: z.array(z.string()),
-  qualifications: z.array(z.string()),
-  tools: z.array(z.string()),
-  keywords: z.array(z.string()),
+  requiredSkills: z.array(z.string()).default([]),
+  preferredSkills: z.array(z.string()).default([]),
+  responsibilities: z.array(z.string()).default([]),
+  qualifications: z.array(z.string()).default([]),
+  tools: z.array(z.string()).default([]),
+  keywords: z.array(z.string()).default([]),
   seniorityLevel: z.enum(['intern', 'entry', 'mid', 'senior', 'staff', 'unknown']),
-  domainSignals: z.array(z.string()),
-  softSkills: z.array(z.string()),
+  domainSignals: z.array(z.string()).default([]),
+  softSkills: z.array(z.string()).default([]),
   rawText: z.string().optional(),
 });
 

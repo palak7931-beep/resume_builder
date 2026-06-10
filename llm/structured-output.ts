@@ -36,6 +36,7 @@ export async function completeStructured<T>(
       try {
         parsed = JSON.parse(jsonText);
       } catch (parseError) {
+        console.log('completeStructured_parse_error', { stage: config.stage, attempt, error: parseError.message });
         throw new LlmError('LLM_JSON_PARSE_ERROR', 'Failed to parse LLM response as JSON', parseError);
       }
 
@@ -43,6 +44,7 @@ export async function completeStructured<T>(
       const result = schema.safeParse(parsed);
       if (!result.success) {
         const errorDetails = result.error.issues.map((e: any) => `${e.path.join('.')}: ${e.message}`).join('; ');
+        console.log('completeStructured_validation_failed', { stage: config.stage, attempt, errorDetails });
         
         if (attempt < MAX_REPAIR_ATTEMPTS) {
           // Attempt repair with error context
