@@ -9,21 +9,20 @@ IMPORTANT RULES:
 - Classify seniority level as: 'intern', 'entry', 'mid', 'senior', 'staff', or 'unknown'
 - Keep the raw text for reference
 
-Output must be valid JSON matching this schema:
-{
-  "jobTitle": string,
-  "company": string (optional),
-  "requiredSkills": string[],
-  "preferredSkills": string[],
-  "responsibilities": string[],
-  "qualifications": string[],
-  "tools": string[],
-  "keywords": string[],
-  "seniorityLevel": "intern" | "entry" | "mid" | "senior" | "staff" | "unknown",
-  "domainSignals": string[],
-  "softSkills": string[],
-  "rawText": string
-}`;
+Output must be valid JSON with these fields:
+- jobTitle
+- company (optional)
+- requiredSkills
+- preferredSkills
+- responsibilities
+- qualifications
+- tools
+- keywords
+- seniorityLevel
+- domainSignals
+- softSkills
+- rawText
+`;
 
 export const JD_EXTRACTION_USER = (jdText: string) => `Parse the following job description into structured JSON:
 
