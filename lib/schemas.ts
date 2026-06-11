@@ -134,7 +134,7 @@ export const ResumeGapSchema = z.object({
   resumeEvidence: z.string(),
   suggestedAction: z.string(),
   canSafelyAdd: z.boolean(),
-  category: z.enum(['skill', 'tool', 'domain', 'seniority', 'qualification']),
+  category: z.enum(['skill', 'tool', 'tools', 'domain', 'seniority', 'qualification', 'qualifications']),
 });
 
 // Gap analysis
